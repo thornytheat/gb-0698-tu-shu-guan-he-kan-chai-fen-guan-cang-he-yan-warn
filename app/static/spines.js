@@ -1,0 +1,1 @@
+document.getElementById('print').addEventListener('click',()=>window.print());document.querySelectorAll('.spine').forEach(spine=>{spine.tabIndex=0;spine.addEventListener('focus',()=>{spine.setAttribute('aria-label',spine.textContent.trim())})});
