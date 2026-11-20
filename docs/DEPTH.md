@@ -14,6 +14,7 @@
 | M5 缺期定位 | 运行缺期定位并核对证据 | `POST /api/5` | `app/modules/m5_gaps/rules.py` | `tests/test_gaps.py` |
 | M6 装订对账 | 运行装订对账并核对证据 | `POST /api/6` | `app/modules/m6_binding/rules.py` | `tests/test_binding.py` |
 | M7 补录复核 | 运行补录复核并核对证据 | `POST /api/7` | `app/modules/m7_supplement/rules.py` | `tests/test_supplement.py` |
+| M8 捐赠分派 | 登记捐赠合刊，按各馆缺期给出分派建议，复核确认唯一去向，到馆核销 | `POST /api/8/*` | `app/modules/m8_donation/rules.py`、`app/modules/m8_donation/store.py` | `tests/test_donation.py` |
 
 ## 陷阱登记
 
@@ -27,6 +28,9 @@
 | TRAP-17 | 刊名演进 | 静默采信错误值 | 别名映射 | `app/modules/m2_titles/rules.py` | `tests/test_titles.py::test_title_alias` |
 | TRAP-22 | 多别名 | 静默采信错误值 | 确定代表名 | `app/modules/m2_titles/rules.py` | `tests/test_titles.py::test_title_spaces` |
 | TRAP-23 | 停刊区间 | 静默采信错误值 | 缺期集合剔除 | `app/modules/m5_gaps/rules.py` | `tests/test_gaps.py::test_gap_suspended` |
+| TRAP-24 | 齐套与老缺期争抢 | 先到先得，老缺期饿死 | 齐套优先+超龄兜底反转，理由可复核 | `app/modules/m8_donation/rules.py` | `tests/test_donation.py::test_suggest_stale_gap_overrides_complete` |
+| TRAP-25 | 两馆同册认领 | 双双确认，一册两去 | 事务内确认唯一去向，他人409，重试幂等 | `app/modules/m8_donation/store.py` | `tests/test_donation.py::test_confirm_concurrent_only_one_wins` |
+| TRAP-26 | 到馆重试 | 重复核销缺期 | 核销主键幂等，重复到馆返回既有结果 | `app/modules/m8_donation/store.py` | `tests/test_donation.py::test_arrive_retry_does_not_duplicate` |
 
 ## 对账规则
 
